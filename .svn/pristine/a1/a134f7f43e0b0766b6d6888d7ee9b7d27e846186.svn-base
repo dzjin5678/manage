@@ -1,0 +1,9 @@
+#项目绝对地址
+#projectUrl=E:/eclipseWorkspces/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/ssmm/
+#projectUrl=C:/Tomcat9Basics/webapps/ssmm/src/main/webapp/
+#上传图片保存路径
+upPicUrl=E:/eclipseWorkspces/manage/src/main/webapp/pic/
+#项目公网地址
+foreignUrl=
+
+

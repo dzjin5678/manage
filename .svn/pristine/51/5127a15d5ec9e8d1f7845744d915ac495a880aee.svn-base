@@ -1,0 +1,34 @@
+package com.ange.service.code;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.CostcodeDao;
+import com.ange.model.Costcode;
+
+@Service
+public class CostCodeService {
+	
+	@Autowired
+	CostcodeDao costcodeDao;
+	
+	public int insertCostCode(String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		return costcodeDao.insertCostCode(costCode, costName, costUnit, costRate, costType);
+	}
+	
+	public int updateCostCode(String id , String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		return costcodeDao.updateCostCode(id , costCode, costName, costUnit, costRate, costType);
+	}
+	
+	public List<Costcode> queryCostCode(){
+		return costcodeDao.queryCostCode();
+	}
+	
+	public int deleteCostCode(String id){
+		return costcodeDao.deleteCostCode(id);
+	}
+}

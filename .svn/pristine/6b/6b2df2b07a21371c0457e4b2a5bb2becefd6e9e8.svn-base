@@ -1,0 +1,40 @@
+package com.ange.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.ange.model.Storagecode;
+
+public interface StoragecodeDao {
+	
+	@Insert("insert into Storagecode(storageCode,storageName,storagePosition) "
+			+ "values(#{storageCode},#{storageName},#{storagePosition})")
+	public int insertStorageCode(
+			@Param("storageCode")String storageCode ,
+			@Param("storageName")String storageName ,
+			@Param("storagePosition")String storagePosition);
+	
+	@Update("update Storagecode set storageCode=#{storageCode},"
+			+ "storageName=#{storageName},storagePosition=#{storagePosition}"
+			+ " where id=#{id} ")
+	public int updateStorageCode(
+			@Param("id")String id ,
+			@Param("storageCode")String storageCode ,
+			@Param("storageName")String storageName ,
+			@Param("storagePosition")String storagePosition);
+	
+	@Select("select * from Storagecode  order by id desc")
+	public List<Storagecode> queryStorageCode();
+	
+	@Select("select * from Storagecode where id=#{id}")
+	public Storagecode getStorageCode(@Param("id")String id);
+	
+	@Delete("delete from Storagecode where id =#{id}")
+	public int deleteStorageCode(@Param("id")String id);
+
+}

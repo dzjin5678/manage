@@ -1,0 +1,67 @@
+package com.ange.controller.code;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ange.service.code.CostCodeService;
+/**
+ * 费用代码控制器
+ * @author dzjin
+ *
+ */
+@Controller
+@RequestMapping("/costCode")
+public class CostcodeController {
+	
+	@Autowired
+	CostCodeService costCodeService;
+	
+	@RequestMapping(value = "/insertCostCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String insertCostCode(String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		if(1 == costCodeService.insertCostCode(costCode, costName, costUnit, costRate, costType)){
+			return "添加成功！";
+		}else{
+			return "添加失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/updateCostCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String updateCostCode(String id,String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		if(1 == costCodeService.updateCostCode(id , costCode, costName, costUnit, costRate, costType)){
+			return "更新成功！";
+		}else{
+			return "更新失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteCostCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteCostCode(String id){
+		if(1 == costCodeService.deleteCostCode(id)){
+			return "删除成功！";
+		}else{
+			return "删除失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/queryCostCodeCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> queryCostCodeCode(){
+		Map<String, Object> result = new HashMap<String,Object>();
+		
+		result.put("list", costCodeService.queryCostCode());
+		
+		return result;
+	}
+
+}

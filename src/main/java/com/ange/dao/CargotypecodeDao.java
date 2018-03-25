@@ -1,0 +1,40 @@
+package com.ange.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.ange.model.Cargotypecode;
+
+public interface CargotypecodeDao {
+	
+	@Insert("insert into Cargotypecode(cargoTypeCode,cargoTypeName) "
+			+ "values(#{cargoTypeCode},#{cargoTypeName})")
+	public int insertCargoTypeCode(
+			@Param("cargoTypeCode")String cargoTypeCode ,
+			@Param("cargoTypeName")String cargoTypeName);
+	
+	@Update("update Cargotypecode set cargoTypeCode=#{cargoTypeCode},"
+			+ "cargoTypeName=#{cargoTypeName} where id=#{id}")
+	public int updateCargoTypeCode(
+			@Param("id")String id ,
+			@Param("cargoTypeCode")String cargoTypeCode ,
+			@Param("cargoTypeName")String cargoTypeName);
+	
+	@Select("select * from Cargotypecode order by id desc")
+	public List<Cargotypecode> queryCargoTypeCode();
+	
+	@Select("select * from Cargotypecode where id=#{id}")
+	public Cargotypecode getCargoTypeCode(@Param("id")String id);
+	
+	@Delete("delete from CargoTypeCode where id =#{id}")
+	public int deleteCargoTypeCode(@Param("id")String id);
+
+	
+	
+
+}

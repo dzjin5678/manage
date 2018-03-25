@@ -1,0 +1,33 @@
+package com.ange.service.code;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.WharfcodeDao;
+import com.ange.model.Wharfcode;
+
+@Service
+public class WharfCodeService {
+	
+	@Autowired
+	WharfcodeDao wharfcodeDao;
+	
+	public int insertWharfCode(String wharfCode ,String wharfName){
+		return wharfcodeDao.insertWharfCode(wharfCode, wharfName);
+	}
+	
+	public int updateWharfCode(String id , String wharfCode ,String wharfName){
+		return wharfcodeDao.updateWharfCode(id , wharfCode, wharfName);
+	}
+	
+	public List<Wharfcode> queryWharfCode(){
+		return wharfcodeDao.queryWharfCode();
+	}
+	
+	public int deleteWharfCode(String id){
+		return wharfcodeDao.deleteWharfCode(id);
+	}
+
+}

@@ -1,0 +1,36 @@
+package com.ange.service.code;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.CargotypecodeDao;
+import com.ange.model.Cargotypecode;
+
+@Service
+public class CargoTypeCodeService {
+	@Autowired
+	CargotypecodeDao cargotypecodeDao;
+	
+	public int insertCargoTypeCode(String cargoTypeCode ,String cargoTypeName){
+		return cargotypecodeDao.insertCargoTypeCode(cargoTypeCode, cargoTypeName);
+	}
+	
+	public int updateCargoTypeCode(String id , String cargoTypeCode ,String cargoTypeName){
+		return cargotypecodeDao.updateCargoTypeCode(id,cargoTypeCode, cargoTypeName);
+	}
+	
+	public List<Cargotypecode> queryCargoTypeCode(){
+		return cargotypecodeDao.queryCargoTypeCode();
+	}
+	
+	public int deleteCargoTypeCode(String id){
+		return cargotypecodeDao.deleteCargoTypeCode(id);
+	}
+	
+
+	
+
+
+}

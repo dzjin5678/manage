@@ -1,0 +1,114 @@
+package com.dzjin.controller.code;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSONObject;
+import com.ange.model.Costcode;
+import com.dzjin.service.code.CostCodeService;
+import com.github.pagehelper.PageInfo;
+/**
+ * 费用代码控制器
+ * @author dzjin
+ *
+ */
+@Controller
+@RequestMapping("/costCode")
+public class CostcodeController {
+	
+	@Autowired
+	CostCodeService costCodeService;
+	
+	@RequestMapping("/test")
+	@ResponseBody
+	public String test(HttpServletRequest request) {
+		System.out.println("金德智");
+		request.getSession().setAttribute("dzjin", "金德智");
+		return "金德智";
+	}
+	
+	@RequestMapping(value = "/getCostCode" , method=RequestMethod.POST)
+	public String getStorageCode(HttpServletRequest request , String id){
+		Costcode costcode = costCodeService.getCostcode(id);
+		if(null!=costcode){
+			List<Costcode> costcodes = new ArrayList<Costcode>();
+			costcodes.add(costcode);
+			request.getSession().setAttribute("costCodeList", costcodes);
+			return "code/updateCostCode.jsp";
+		}else{
+			return "code/costCodeList.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/insertCostCode" , method = RequestMethod.POST)
+	public String insertCostCode(String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		if(1 == costCodeService.insertCostCode(costCode, costName, costUnit, costRate, costType)){
+			return "code/costCodeList.jsp";
+		}else{
+			return "code/addCostCode.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/updateCostCode" , method = RequestMethod.POST)
+	public String updateCostCode(String id,String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		if(1 == costCodeService.updateCostCode(id , costCode, costName, costUnit, costRate, costType)){
+			return "code/costCodeList.jsp";
+		}else{
+			return "code/costCodeList.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteCostCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteCostCode(String id){
+		if(1 == costCodeService.deleteCostCode(id)){
+			return "删除成功！";
+		}else{
+			return "删除失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/queryCostCodeCode" , method = RequestMethod.GET)
+	public String queryCostCodeCode(HttpServletRequest request, HttpServletResponse response, 
+			Integer page, Integer strip){
+		
+		Map<String, Object> map = costCodeService.queryCostCode(page , strip);
+		request.getSession().setAttribute("page", page);
+		request.getSession().setAttribute("strip", strip);
+		request.getSession().setAttribute("costList", map.get("list"));
+		request.getSession().setAttribute("total", map.get("total"));
+		return "code/costCodeList.jsp";
+	}
+	
+	@RequestMapping(value = "/queryCostCodeTemp" , method = RequestMethod.POST)
+	public void queryCostCodeTemp(HttpServletRequest request, HttpServletResponse response, 
+			Integer page, Integer strip){
+		
+		System.out.println("**************************************************************************************");
+		System.out.println("POST /contract/queryContractList");
+		System.out.println("**************************************************************************************");
+		
+		List<Costcode> contractList=costCodeService.queryCostCodeTemp();
+		PageInfo<Costcode> pageInfo=new PageInfo<Costcode>(contractList);
+		
+		JSONObject result=new JSONObject();
+		result.put("rows", contractList);
+		result.put("total", pageInfo.getPages());
+		result.put("records", pageInfo.getTotal());
+		
+		ServletUtil.createSuccessResponse(200, result, response);
+	}
+
+}

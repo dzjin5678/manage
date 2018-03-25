@@ -1,0 +1,91 @@
+package com.liutianjun.controller.ship_prediction;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.liutianjun.pojo.ShipDynamic;
+import com.liutianjun.service.ShipDynamicService;
+/**
+ * 船舶动态管理Controller
+ * @author a121bc
+ *
+ */
+@Controller
+@RequestMapping("/ship_dynamic")
+public class ShipDynamicController {
+
+	@Autowired
+	private ShipDynamicService shipDynamicService;
+	
+	public String showIndex() {
+		return "ship_predition/ship_dynamic.jsp";
+	}
+	
+	@RequestMapping("/list")
+	public String getShipDynamicList(@RequestParam(value="page", defaultValue="1")int page, @RequestParam(value="strip", defaultValue="10")int strip, Model model) {
+		List<ShipDynamic> list = shipDynamicService.getShipDynamicList(page, strip);
+		int total = shipDynamicService.countAll();
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
+		model.addAttribute("strip", strip);
+		model.addAttribute("total", total);
+		return "ship_predition/ship_dynamic.jsp";
+	}
+	
+	@RequestMapping("/shipdynamic")
+	public String getShipDynamicListByForecast(@RequestParam(value="page", defaultValue="1")int page, @RequestParam(value="strip", defaultValue="10")int strip,@RequestParam(value="id")int shipForecastId , Model model) {
+		List<ShipDynamic> list = shipDynamicService.getShipDynamicListByForecast(page, strip, shipForecastId);
+		int total = shipDynamicService.countAll();
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
+		model.addAttribute("strip", strip);
+		model.addAttribute("total", total);
+		return "ship_predition/ship_dynamic.jsp";
+	}
+	
+	@RequestMapping(value = "/insert" , method = RequestMethod.POST)
+	public String insert(ShipDynamic record) {
+		if(1 == shipDynamicService.insert(record)){
+			return "/ship_dynamic/list";
+		}else{
+			return "/ship_dynamic/list";
+		}
+	}
+	
+	@RequestMapping(value = "/delete" , method = RequestMethod.POST)
+	public String delete(Integer id) {
+		if(1 == shipDynamicService.deleteByPrimaryKey(id)){
+			return "/ship_dynamic/list";
+		}else{
+			return "/ship_dynamic/list";
+		}
+	}
+	
+	@RequestMapping(value = "/update" , method = RequestMethod.POST)
+	public String updateByPrimaryKey(ShipDynamic record){
+		if(1 == shipDynamicService.updateByPrimaryKey(record)){
+			return "/ship_dynamic/list";
+		}else{
+			return "/ship_dynamic/list";
+		}
+	}
+	
+	@RequestMapping("/updatebefore")
+	public String updateBefore(@RequestParam(value="id")Integer id, Model model){
+		ShipDynamic shipDynamic = shipDynamicService.selectByPrimaryKey(id);
+		model.addAttribute("shipDynamic", shipDynamic);
+		return "/ship_predition/update_ship_dynamic.jsp";
+		
+	}
+	
+	
+	
+	
+	
+}

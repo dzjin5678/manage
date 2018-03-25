@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiangjin.dao.CarWeighDao" >
+  <resultMap id="BaseResultMap" type="com.jiangjin.model.CarWeigh" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="release_id" property="releaseId" jdbcType="INTEGER" />
+    <result column="tare" property="tare" jdbcType="VARCHAR" />
+    <result column="tare_time" property="tareTime" jdbcType="VARCHAR" />
+    <result column="tare_number" property="tareNumber" jdbcType="VARCHAR" />
+    <result column="gross" property="gross" jdbcType="VARCHAR" />
+    <result column="gross_time" property="grossTime" jdbcType="VARCHAR" />
+    <result column="gross_number" property="grossNumber" jdbcType="VARCHAR" />
+    <result column="temperature" property="temperature" jdbcType="VARCHAR" />
+    <result column="seal_no" property="sealNo" jdbcType="VARCHAR" />
+    <result column="weight_people" property="weightPeople" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="carCode" property="carCode" jdbcType="VARCHAR" />
+    <result column="creatorName" property="creatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      cw.id, cw.release_id ,cw.tare ,cw.tare_time,cw.tare_number,cw.gross,cw.gross_time,cw.gross_number,cw.temperature,cw.seal_no,cw.weight_people,cw.creator,cw.remark
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jiangjin.model.CarWeighQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,cr.car_code as carCode 
+    ,u.realName as creatorName
+    from car_weigh cw inner join car_release cr on cw.release_id=cr.id inner join user u on u.id=cw.creator
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="findCarWeighById" resultMap="BaseResultMap" parameterType="com.jiangjin.model.CarWeighQuery" >
+    select 
+    	cw.id, cw.release_id ,cw.tare ,cw.tare_time,cw.tare_number,cw.gross,cw.gross_time,cw.gross_number,cw.temperature,cw.seal_no,cw.weight_people,cw.creator,cw.remark,
+    	cr.car_code as carCode
+    from car_weigh cw inner join car_release cr on cw.release_id=cr.id
+    where cw.id = #{id}
+  </select>
+  <delete id="deletCarWeigh" parameterType="com.jiangjin.model.CarWeigh" >
+    delete from car_weigh
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.jiangjin.model.CarWeigh" keyProperty="id" useGeneratedKeys="true">
+    insert into car_weigh ( release_id ,tare ,tare_time,tare_number,gross,gross_time,gross_number,temperature,seal_no,weight_people,creator,remark
+      )
+    	values ( #{releaseId} ,#{tare },#{tareTime},#{tareNumber},#{gross},#{grossTime},#{grossNumber},#{temperature},#{sealNo},#{weightPeople},#{creator},#{remark}
+      )
+  </insert>
+  <select id="countAll" resultType="java.lang.Integer" >
+    select count(*) from car_weigh
+  </select>
+  <update id="updateCarWeigh" parameterType="com.jiangjin.model.CarWeigh" >
+    update car_weigh
+    <set >
+      <if test="tare != null" >
+        tare = #{tare},
+      </if>
+      <if test="tareTime!= null" >
+        tare_time = #{tareTime},
+      </if>
+      <if test="tareNumber != null" >
+        tare_number = #{tareNumber},
+      </if>
+      <if test="gross != null" >
+        gross = #{gross},
+      </if>
+      <if test="grossTime != null" >
+        gross_time = #{grossTime},
+      </if>
+      <if test="grossNumber != null" >
+        gross_number = #{grossNumber},
+      </if>
+      <if test="temperature != null" >
+        temperature = #{temperature},
+      </if>
+      <if test="sealNo != null" >
+        seal_no = #{sealNo},
+      </if>
+      <if test="weightPeople != null" >
+        weight_people = #{weightPeople},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

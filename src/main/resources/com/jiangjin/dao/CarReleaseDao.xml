@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiangjin.dao.CarReleaseDao" >
+  <resultMap id="BaseResultMap" type="com.jiangjin.model.CarRelease" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="car_code" property="carCode" jdbcType="VARCHAR" />
+    <result column="handling_type" property="handlingType" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="release_type" property="releaseType" jdbcType="INTEGER" />
+    <result column="release_record_id" property="releaseRecordId" jdbcType="VARCHAR" />
+    <result column="is_cancel" property="isCancel" jdbcType="INTEGER" />
+    <result column="release_start_time" property="releaseStartTime" jdbcType="VARCHAR" />
+    <result column="release_end_time" property="releaseEndTime" jdbcType="VARCHAR" />
+    <result column="cargotype" property="cargotype" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, car_code ,handling_type ,create_time,release_type,release_type,release_record_id,is_cancel,release_start_time,release_end_time,cargotype,amount
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jiangjin.model.CarReleaseQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from car_release
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="findCarReleaseById" resultMap="BaseResultMap" parameterType="com.jiangjin.model.CarRelease" >
+    select 
+    	id, car_code ,handling_type ,create_time,release_type,release_type,release_record_id,is_cancel,release_start_time,release_end_time,cargotype,amount
+    from car_release
+    where id = #{id}
+  </select>
+  <delete id="deletCarRelease" parameterType="java.lang.Integer" >
+    delete from car_release
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.jiangjin.model.CarRelease" >
+    insert into car_release (id, car_code ,handling_type ,create_time,release_type,release_record_id,is_cancel,release_start_time,release_end_time,cargotype,amount
+      )
+    	values (#{id}, #{carCode} ,#{handlingType },#{createTime},#{releaseType},#{releaseRecordId},#{isCancel},#{releaseStartTime},#{releaseEndTime},#{cargotype},#{amount}
+      )
+  </insert>
+  <select id="countAll" resultType="java.lang.Integer" >
+    select count(*) from car_release
+  </select>
+  <update id="updateCarRelease" parameterType="com.jiangjin.model.CarRelease" >
+    update car_release
+    <set >
+      <if test="carCode != null" >
+        car_code = #{carCode},
+      </if>
+      <if test="handlingType!= null" >
+        handling_type = #{handlingType},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="releaseType != null" >
+        release_type = #{releaseType},
+      </if>
+      <if test="releaseRecordId != null" >
+        release_record_id = #{releaseRecordId},
+      </if>
+      <if test="isCancel != null" >
+        is_cancel = #{isCancel},
+      </if>
+      <if test="releaseStartTime != null" >
+        release_start_time = #{releaseStartTime},
+      </if>
+      <if test="releaseEndTime != null" >
+        release_end_time = #{releaseEndTime},
+      </if>
+      <if test="cargotype != null" >
+        cargotype = #{cargotype},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

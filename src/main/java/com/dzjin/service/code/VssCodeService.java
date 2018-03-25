@@ -1,0 +1,58 @@
+package com.dzjin.service.code;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.VsscodeDao;
+import com.ange.model.Vsscode;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+@Service
+public class VssCodeService {
+	
+	@Autowired
+	VsscodeDao vsscodeDao;
+	
+	public int insertVssCode(String vssCode ,String vssCname ,String vssEname ,String nationality ,
+			String caption,String width ,String tonnage ,String cargoType ,String loadline ,
+			String distance_outfall_bow , String unitCode ,String agency ,String remark){
+		return vsscodeDao.insertVssCode(vssCode, vssCname, vssEname, nationality, caption, width, tonnage, 
+				cargoType, loadline, distance_outfall_bow, unitCode, agency, remark);
+	}
+	
+	public int updateVssCode(String id , String vssCode ,String vssCname ,String vssEname ,String nationality ,
+			String caption,String width ,String tonnage ,String cargoType ,String loadline ,
+			String distance_outfall_bow , String unitCode ,String agency ,String remark){
+		return vsscodeDao.updateVssCode(id,vssCode, vssCname, vssEname, nationality, caption, width, tonnage, 
+				cargoType, loadline, distance_outfall_bow, unitCode, agency, remark);
+	}
+	
+	public Map<String, Object> queryVssCode(Integer page, Integer strip){
+		
+		PageHelper.startPage(page, strip);
+		List<Vsscode> list = vsscodeDao.queryVssCode();
+		System.out.println("船舶信息："+list.toString());
+		for(Vsscode vsscode : list){
+			System.out.println(vsscode.toString());
+		}
+		PageInfo<Vsscode> pageInfo = new PageInfo<Vsscode>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+	
+	public Vsscode getVssCode(String id){
+		return vsscodeDao.getVssCode(id);
+	}
+	
+	public int deleteVssCode(String id){
+		return vsscodeDao.deleteVssCode(id);
+	}
+
+}

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liutianjun.dao.ShipForecastDao" >
+  <resultMap id="BaseResultMap" type="com.liutianjun.pojo.ShipForecast" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ship_code" property="shipCode" jdbcType="VARCHAR" />
+    <result column="voyage_number" property="voyageNumber" jdbcType="VARCHAR" />
+    <result column="import_voyage" property="importVoyage" jdbcType="VARCHAR" />
+    <result column="export_voyage" property="exportVoyage" jdbcType="VARCHAR" />
+    <result column="notice_number" property="noticeNumber" jdbcType="VARCHAR" />
+    <result column="affiliated_company" property="affiliatedCompany" jdbcType="VARCHAR" />
+    <result column="proxy" property="proxy" jdbcType="VARCHAR" />
+    <result column="i_f_trade" property="iFTrade" jdbcType="VARCHAR" />
+    <result column="gross_weight" property="grossWeight" jdbcType="INTEGER" />
+    <result column="net_weight" property="netWeight" jdbcType="INTEGER" />
+    <result column="expected_arrival_time" property="expectedArrivalTime" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_realName" property="userRealname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, ship_code, voyage_number, import_voyage, export_voyage, notice_number, affiliated_company, 
+      proxy, i_f_trade, gross_weight, net_weight, expected_arrival_time, user_id, user_realName
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.liutianjun.pojo.ShipForecastQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ship_forecast
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    id,ship_code,voyage_number,import_voyage,export_voyage,notice_number,affiliated_company,proxy,i_f_trade,gross_weight,net_weight,expected_arrival_time,user_id,user_realName
+    from ship_forecast
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ship_forecast
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.liutianjun.pojo.ShipForecastQuery" >
+    delete from ship_forecast
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.liutianjun.pojo.ShipForecast" >
+    insert into ship_forecast (id, ship_code, voyage_number, 
+      import_voyage, export_voyage, notice_number, 
+      affiliated_company, proxy, i_f_trade, 
+      gross_weight, net_weight, expected_arrival_time, 
+      user_id, user_realName)
+    values (#{id,jdbcType=INTEGER}, #{shipCode,jdbcType=VARCHAR}, #{voyageNumber,jdbcType=VARCHAR}, 
+      #{importVoyage,jdbcType=VARCHAR}, #{exportVoyage,jdbcType=VARCHAR}, #{noticeNumber,jdbcType=VARCHAR}, 
+      #{affiliatedCompany,jdbcType=VARCHAR}, #{proxy,jdbcType=VARCHAR}, #{iFTrade,jdbcType=VARCHAR}, 
+      #{grossWeight,jdbcType=INTEGER}, #{netWeight,jdbcType=INTEGER}, #{expectedArrivalTime,jdbcType=TIMESTAMP}, 
+      #{userId,jdbcType=INTEGER}, #{userRealname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.liutianjun.pojo.ShipForecast" >
+    insert into ship_forecast
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shipCode != null" >
+        ship_code,
+      </if>
+      <if test="voyageNumber != null" >
+        voyage_number,
+      </if>
+      <if test="importVoyage != null" >
+        import_voyage,
+      </if>
+      <if test="exportVoyage != null" >
+        export_voyage,
+      </if>
+      <if test="noticeNumber != null" >
+        notice_number,
+      </if>
+      <if test="affiliatedCompany != null" >
+        affiliated_company,
+      </if>
+      <if test="proxy != null" >
+        proxy,
+      </if>
+      <if test="iFTrade != null" >
+        i_f_trade,
+      </if>
+      <if test="grossWeight != null" >
+        gross_weight,
+      </if>
+      <if test="netWeight != null" >
+        net_weight,
+      </if>
+      <if test="expectedArrivalTime != null" >
+        expected_arrival_time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userRealname != null" >
+        user_realName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shipCode != null" >
+        #{shipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="voyageNumber != null" >
+        #{voyageNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="importVoyage != null" >
+        #{importVoyage,jdbcType=VARCHAR},
+      </if>
+      <if test="exportVoyage != null" >
+        #{exportVoyage,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeNumber != null" >
+        #{noticeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="affiliatedCompany != null" >
+        #{affiliatedCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="proxy != null" >
+        #{proxy,jdbcType=VARCHAR},
+      </if>
+      <if test="iFTrade != null" >
+        #{iFTrade,jdbcType=VARCHAR},
+      </if>
+      <if test="grossWeight != null" >
+        #{grossWeight,jdbcType=INTEGER},
+      </if>
+      <if test="netWeight != null" >
+        #{netWeight,jdbcType=INTEGER},
+      </if>
+      <if test="expectedArrivalTime != null" >
+        #{expectedArrivalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userRealname != null" >
+        #{userRealname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.liutianjun.pojo.ShipForecastQuery" resultType="java.lang.Integer" >
+    select count(*) from ship_forecast
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ship_forecast
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.shipCode != null" >
+        ship_code = #{record.shipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.voyageNumber != null" >
+        voyage_number = #{record.voyageNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.importVoyage != null" >
+        import_voyage = #{record.importVoyage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exportVoyage != null" >
+        export_voyage = #{record.exportVoyage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeNumber != null" >
+        notice_number = #{record.noticeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.affiliatedCompany != null" >
+        affiliated_company = #{record.affiliatedCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proxy != null" >
+        proxy = #{record.proxy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iFTrade != null" >
+        i_f_trade = #{record.iFTrade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grossWeight != null" >
+        gross_weight = #{record.grossWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.netWeight != null" >
+        net_weight = #{record.netWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.expectedArrivalTime != null" >
+        expected_arrival_time = #{record.expectedArrivalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userRealname != null" >
+        user_realName = #{record.userRealname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ship_forecast
+    set id = #{record.id,jdbcType=INTEGER},
+      ship_code = #{record.shipCode,jdbcType=VARCHAR},
+      voyage_number = #{record.voyageNumber,jdbcType=VARCHAR},
+      import_voyage = #{record.importVoyage,jdbcType=VARCHAR},
+      export_voyage = #{record.exportVoyage,jdbcType=VARCHAR},
+      notice_number = #{record.noticeNumber,jdbcType=VARCHAR},
+      affiliated_company = #{record.affiliatedCompany,jdbcType=VARCHAR},
+      proxy = #{record.proxy,jdbcType=VARCHAR},
+      i_f_trade = #{record.iFTrade,jdbcType=VARCHAR},
+      gross_weight = #{record.grossWeight,jdbcType=INTEGER},
+      net_weight = #{record.netWeight,jdbcType=INTEGER},
+      expected_arrival_time = #{record.expectedArrivalTime,jdbcType=TIMESTAMP},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_realName = #{record.userRealname,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liutianjun.pojo.ShipForecast" >
+    update ship_forecast
+    <set >
+      <if test="shipCode != null" >
+        ship_code = #{shipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="voyageNumber != null" >
+        voyage_number = #{voyageNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="importVoyage != null" >
+        import_voyage = #{importVoyage,jdbcType=VARCHAR},
+      </if>
+      <if test="exportVoyage != null" >
+        export_voyage = #{exportVoyage,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeNumber != null" >
+        notice_number = #{noticeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="affiliatedCompany != null" >
+        affiliated_company = #{affiliatedCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="proxy != null" >
+        proxy = #{proxy,jdbcType=VARCHAR},
+      </if>
+      <if test="iFTrade != null" >
+        i_f_trade = #{iFTrade,jdbcType=VARCHAR},
+      </if>
+      <if test="grossWeight != null" >
+        gross_weight = #{grossWeight,jdbcType=INTEGER},
+      </if>
+      <if test="netWeight != null" >
+        net_weight = #{netWeight,jdbcType=INTEGER},
+      </if>
+      <if test="expectedArrivalTime != null" >
+        expected_arrival_time = #{expectedArrivalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userRealname != null" >
+        user_realName = #{userRealname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liutianjun.pojo.ShipForecast" >
+    update ship_forecast
+    set ship_code = #{shipCode,jdbcType=VARCHAR},
+      voyage_number = #{voyageNumber,jdbcType=VARCHAR},
+      import_voyage = #{importVoyage,jdbcType=VARCHAR},
+      export_voyage = #{exportVoyage,jdbcType=VARCHAR},
+      notice_number = #{noticeNumber,jdbcType=VARCHAR},
+      affiliated_company = #{affiliatedCompany,jdbcType=VARCHAR},
+      proxy = #{proxy,jdbcType=VARCHAR},
+      i_f_trade = #{iFTrade,jdbcType=VARCHAR},
+      gross_weight = #{grossWeight,jdbcType=INTEGER},
+      net_weight = #{netWeight,jdbcType=INTEGER},
+      expected_arrival_time = #{expectedArrivalTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_realName = #{userRealname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

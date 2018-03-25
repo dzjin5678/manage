@@ -1,0 +1,65 @@
+package com.liutianjun.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.liutianjun.dao.ShipForecastDao;
+import com.liutianjun.pojo.ShipForecast;
+import com.liutianjun.pojo.ShipForecastQuery;
+import com.liutianjun.service.ShipForecastService;
+
+@Service
+public class ShipForecastServiceImpl implements ShipForecastService {
+	
+	@Autowired
+	private ShipForecastDao shipForecastDao;
+
+	@Override
+	public List<ShipForecast> getShipForecastList(int page,int rows) {
+		ShipForecastQuery example = new ShipForecastQuery();
+		example.setPageNo(page);
+		example.setPageSize(rows);
+		List<ShipForecast> list = shipForecastDao.selectByExample(example);
+		return list;
+	}
+
+
+	@Override
+	public int insert(ShipForecast record) {
+		int i = shipForecastDao.insert(record);
+		return i;
+	}
+
+	@Override
+	public int updateByPrimaryKey(ShipForecast record) {
+		int i = shipForecastDao.updateByPrimaryKey(record);
+		return i;
+	}
+
+
+
+	@Override
+	public int deleteByPrimaryKey(Integer id) {
+		int i = shipForecastDao.deleteByPrimaryKey(id);
+		return i;
+	}
+
+
+	@Override
+	public int countAll() {
+		ShipForecastQuery example = new ShipForecastQuery();
+		int i = shipForecastDao.countByExample(example);
+		return i;
+	}
+
+
+	@Override
+	public ShipForecast selectByPrimaryKey(Integer id) {
+		ShipForecast shipForecast = shipForecastDao.selectByPrimaryKey(id);
+		return shipForecast;
+	}
+
+
+}

@@ -1,0 +1,35 @@
+package com.ange.service.code;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.StoragecodeDao;
+import com.ange.model.Storagecode;
+
+@Service
+public class StorageCodeService {
+	
+	@Autowired
+	StoragecodeDao storagecodeDao;
+	
+	public int insertStorageTypeCode(String storageCode ,String storageName ,String storagePosition){
+		return storagecodeDao.insertStorageCode(storageCode, storageName, storagePosition);
+	}
+	
+	public int updateStorageTypeCode(String id , String storageCode ,String storageName ,String storagePosition){
+		return storagecodeDao.updateStorageCode(id , storageCode, storageName, storagePosition);
+	}
+	
+	
+	
+	public List<Storagecode> queryStorageCode(){
+		return storagecodeDao.queryStorageCode();
+	}
+	
+	public int deleteStorageCode(String id){
+		return storagecodeDao.deleteStorageCode(id);
+	}
+
+}

@@ -1,0 +1,130 @@
+package com.liutianjun.controller.ship_table;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.liutianjun.pojo.ShipForeignTradeBill;
+import com.liutianjun.service.ShipForeignTradeBillService;
+
+/**
+ * 船舶外贸提单表Controller
+ *
+ * @author Administrator
+ *
+ */
+@Controller
+@RequestMapping("/ship_foreign_trade_bill")
+public class ShipForeignTradeBillController {
+
+	@Autowired
+	private ShipForeignTradeBillService shipForeignTradeBillService;
+	
+	/**
+	 * 展示船舶外贸提单表
+	 * @Title: getShipDynamicList 
+	 * @param @param page
+	 * @param @param strip
+	 * @param @param shipInformationId
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/list")
+	public String getShipDynamicList(@RequestParam(value="page", defaultValue="1")int page, @RequestParam(value="strip", defaultValue="10")int strip, @RequestParam(value="shipInformationId")int shipInformationId, Model model) {
+		List<ShipForeignTradeBill> list = shipForeignTradeBillService.getShipForeignTradeBillList(page, strip, shipInformationId);
+		int total = shipForeignTradeBillService.countByshipInformationId(shipInformationId);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
+		model.addAttribute("strip", strip);
+		model.addAttribute("total", total);
+		model.addAttribute("shipInformationId", shipInformationId);
+		return "ship_table/ship_foreign_trade_bill.jsp";
+	}
+	
+	/**
+	 * 插入提单信息
+	 * @Title: insert 
+	 * @param @param record
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping(value = "/insert" , method = RequestMethod.POST)
+	public String insert(ShipForeignTradeBill record) {
+		Integer shipInformationId = record.getShipInformationId();
+		if(1 == shipForeignTradeBillService.insert(record)){
+			return "redirect:/ship_foreign_trade_bill/list?shipInformationId="+shipInformationId;
+		}else{
+			return "redirect:/ship_foreign_trade_bill/list?shipInformationId="+shipInformationId;
+		}
+	}
+	
+	/**
+	 * 跳转到插入界面
+	 * @Title: insertBefore 
+	 * @param @param id
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/insertbefore")
+	public String insertBefore(@RequestParam(value="shipInformationId")Integer shipInformationId, Model model) {
+		model.addAttribute("shipInformationId", shipInformationId);
+		return "ship_table/add_ship_foreign_trade_bill.jsp";
+	}
+	
+	/**
+	 * 删除提单信息
+	 * @Title: deleteByPrimaryKey 
+	 * @param @param id
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping(value = "/delete" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteByPrimaryKey(Integer id) {
+		if(1 == shipForeignTradeBillService.deleteByPrimaryKey(id)){
+			return "redirect:/ship_foreign_trade_bill/list";
+		}else{
+			return "redirect:/ship_foreign_trade_bill/list";
+		}
+	}
+	
+	/**
+	 * 跳转到修改界面
+	 * @Title: updateBefore 
+	 * @param @param id
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/updatebefore")
+	public String updateBefore(@RequestParam(value="id")Integer id, Model model) {
+		ShipForeignTradeBill shipForeignTradeBill = shipForeignTradeBillService.selectByPrimaryKey(id);
+		model.addAttribute("shipForeignTradeBill", shipForeignTradeBill);
+		model.addAttribute("id", id);
+		return "ship_table/update_ship_foreign_trade_bill.jsp";
+	}
+	
+	/**
+	 * 修改记录
+	 * @Title: updateByPrimaryKeySelective 
+	 * @param @param record
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping(value = "/update" , method = RequestMethod.POST)
+	public String updateByPrimaryKeySelective(ShipForeignTradeBill record, Integer shipInformationId) {
+		if(1 == shipForeignTradeBillService.updateByPrimaryKey(record)){
+			return "redirect:/ship_foreign_trade_bill/list?shipInformationId="+shipInformationId;
+		}else{
+			return "redirect:/ship_foreign_trade_bill/list?shipInformationId="+shipInformationId;
+		}
+	}
+}

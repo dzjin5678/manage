@@ -1,0 +1,26 @@
+package com.liutianjun.service;
+
+import java.util.List;
+
+import com.liutianjun.pojo.ShipDynamic;
+
+public interface ShipDynamicService {
+
+	//查询船舶动态列表
+	List<ShipDynamic> getShipDynamicList(int page, int rows);
+	//插入记录
+	int insert(ShipDynamic record);
+	//通过主键删除记录
+	int deleteByPrimaryKey(Integer id);
+	//通过主键更新记录
+	int updateByPrimaryKey(ShipDynamic record);
+	//查询总计路数
+	int countAll();
+	//通过主键查询记录
+	ShipDynamic selectByPrimaryKey(Integer id);
+	//通过船舶预报ID查询列表
+	List<ShipDynamic> getShipDynamicListByForecast(int page, int rows,int id);
+	//查询符合条件的记录数量
+	int countByShipForecastId(Integer shipForecastid);
+	
+}

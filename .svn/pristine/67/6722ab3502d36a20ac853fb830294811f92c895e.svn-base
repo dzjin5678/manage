@@ -1,0 +1,36 @@
+package com.ange.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.ange.model.Wharfcode;
+
+public interface WharfcodeDao {
+	
+	@Insert("insert into Wharfcode(wharfCode,wharfName) "
+			+ "values(#{wharfCode},#{wharfName})")
+	public int insertWharfCode(
+			@Param("wharfCode")String wharfCode ,
+			@Param("wharfName")String wharfName);
+	
+	@Update("update Wharfcode set wharfCode=#{wharfCode},wharfName=#{wharfName}"
+			+ " where id=#{id} ")
+	public int updateWharfCode(
+			@Param("id")String id,
+			@Param("wharfCode")String wharfCode ,
+			@Param("wharfName")String wharfName);
+	
+	
+	@Select("select * from WharfCode")
+	public List<Wharfcode> queryWharfCode();
+	
+	@Delete("delete from WharfCode where id =#{id}")
+	public int deleteWharfCode(@Param("id")String id);
+	
+
+}

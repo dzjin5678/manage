@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liutianjun.dao.ShipDynamicDao" >
+  <resultMap id="BaseResultMap" type="com.liutianjun.pojo.ShipDynamic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="voyage_number" property="voyageNumber" jdbcType="VARCHAR" />
+    <result column="arrive_anchorage" property="arriveAnchorage" jdbcType="VARCHAR" />
+    <result column="entry_time" property="entryTime" jdbcType="VARCHAR" />
+    <result column="departure_time" property="departureTime" jdbcType="VARCHAR" />
+    <result column="entry_departure" property="entryDeparture" jdbcType="INTEGER" />
+    <result column="first_cable_time" property="firstCableTime" jdbcType="VARCHAR" />
+    <result column="berthing_time" property="berthingTime" jdbcType="VARCHAR" />
+    <result column="load_unload" property="loadUnload" jdbcType="INTEGER" />
+    <result column="transport_mode" property="transportMode" jdbcType="VARCHAR" />
+    <result column="last_port" property="lastPort" jdbcType="VARCHAR" />
+    <result column="next_port" property="nextPort" jdbcType="VARCHAR" />
+    <result column="load_unload_category" property="loadUnloadCategory" jdbcType="INTEGER" />
+    <result column="reservoir_area" property="reservoirArea" jdbcType="VARCHAR" />
+    <result column="wharf" property="wharf" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="berth" property="berth" jdbcType="VARCHAR" />
+    <result column="water_diversion_tug" property="waterDiversionTug" jdbcType="INTEGER" />
+    <result column="reservoir_shipping_freight_forwarding" property="reservoirShippingFreightForwarding" jdbcType="INTEGER" />
+    <result column="arrival_time" property="arrivalTime" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_realName" property="userRealname" jdbcType="VARCHAR" />
+    <result column="ship_forecast_id" property="shipForecastId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, voyage_number, arrive_anchorage, entry_time, departure_time, entry_departure, 
+      first_cable_time, berthing_time, load_unload, transport_mode, last_port, next_port, 
+      load_unload_category, reservoir_area, wharf, position, berth, water_diversion_tug, 
+      reservoir_shipping_freight_forwarding, arrival_time, user_id, user_realName, ship_forecast_id
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.liutianjun.pojo.ShipDynamicQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ship_dynamic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    id,voyage_number,arrive_anchorage,entry_time,departure_time,entry_departure,first_cable_time,berthing_time,load_unload,transport_mode,last_port,next_port,load_unload_category,reservoir_area,wharf,position,berth,water_diversion_tug,reservoir_shipping_freight_forwarding,arrival_time,user_id,user_realName,ship_forecast_id
+    from ship_dynamic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ship_dynamic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.liutianjun.pojo.ShipDynamicQuery" >
+    delete from ship_dynamic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.liutianjun.pojo.ShipDynamic" >
+    insert into ship_dynamic (id, voyage_number, arrive_anchorage, 
+      entry_time, departure_time, entry_departure, 
+      first_cable_time, berthing_time, load_unload, 
+      transport_mode, last_port, next_port, 
+      load_unload_category, reservoir_area, wharf, 
+      position, berth, water_diversion_tug, 
+      reservoir_shipping_freight_forwarding, arrival_time, 
+      user_id, user_realName, ship_forecast_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{voyageNumber,jdbcType=VARCHAR}, #{arriveAnchorage,jdbcType=VARCHAR}, 
+      #{entryTime,jdbcType=VARCHAR}, #{departureTime,jdbcType=VARCHAR}, #{entryDeparture,jdbcType=INTEGER}, 
+      #{firstCableTime,jdbcType=VARCHAR}, #{berthingTime,jdbcType=VARCHAR}, #{loadUnload,jdbcType=INTEGER}, 
+      #{transportMode,jdbcType=VARCHAR}, #{lastPort,jdbcType=VARCHAR}, #{nextPort,jdbcType=VARCHAR}, 
+      #{loadUnloadCategory,jdbcType=INTEGER}, #{reservoirArea,jdbcType=VARCHAR}, #{wharf,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{berth,jdbcType=VARCHAR}, #{waterDiversionTug,jdbcType=INTEGER}, 
+      #{reservoirShippingFreightForwarding,jdbcType=INTEGER}, #{arrivalTime,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{userRealname,jdbcType=VARCHAR}, #{shipForecastId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.liutianjun.pojo.ShipDynamic" >
+    insert into ship_dynamic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="voyageNumber != null" >
+        voyage_number,
+      </if>
+      <if test="arriveAnchorage != null" >
+        arrive_anchorage,
+      </if>
+      <if test="entryTime != null" >
+        entry_time,
+      </if>
+      <if test="departureTime != null" >
+        departure_time,
+      </if>
+      <if test="entryDeparture != null" >
+        entry_departure,
+      </if>
+      <if test="firstCableTime != null" >
+        first_cable_time,
+      </if>
+      <if test="berthingTime != null" >
+        berthing_time,
+      </if>
+      <if test="loadUnload != null" >
+        load_unload,
+      </if>
+      <if test="transportMode != null" >
+        transport_mode,
+      </if>
+      <if test="lastPort != null" >
+        last_port,
+      </if>
+      <if test="nextPort != null" >
+        next_port,
+      </if>
+      <if test="loadUnloadCategory != null" >
+        load_unload_category,
+      </if>
+      <if test="reservoirArea != null" >
+        reservoir_area,
+      </if>
+      <if test="wharf != null" >
+        wharf,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="berth != null" >
+        berth,
+      </if>
+      <if test="waterDiversionTug != null" >
+        water_diversion_tug,
+      </if>
+      <if test="reservoirShippingFreightForwarding != null" >
+        reservoir_shipping_freight_forwarding,
+      </if>
+      <if test="arrivalTime != null" >
+        arrival_time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userRealname != null" >
+        user_realName,
+      </if>
+      <if test="shipForecastId != null" >
+        ship_forecast_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="voyageNumber != null" >
+        #{voyageNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="arriveAnchorage != null" >
+        #{arriveAnchorage,jdbcType=VARCHAR},
+      </if>
+      <if test="entryTime != null" >
+        #{entryTime,jdbcType=VARCHAR},
+      </if>
+      <if test="departureTime != null" >
+        #{departureTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entryDeparture != null" >
+        #{entryDeparture,jdbcType=INTEGER},
+      </if>
+      <if test="firstCableTime != null" >
+        #{firstCableTime,jdbcType=VARCHAR},
+      </if>
+      <if test="berthingTime != null" >
+        #{berthingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="loadUnload != null" >
+        #{loadUnload,jdbcType=INTEGER},
+      </if>
+      <if test="transportMode != null" >
+        #{transportMode,jdbcType=VARCHAR},
+      </if>
+      <if test="lastPort != null" >
+        #{lastPort,jdbcType=VARCHAR},
+      </if>
+      <if test="nextPort != null" >
+        #{nextPort,jdbcType=VARCHAR},
+      </if>
+      <if test="loadUnloadCategory != null" >
+        #{loadUnloadCategory,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirArea != null" >
+        #{reservoirArea,jdbcType=VARCHAR},
+      </if>
+      <if test="wharf != null" >
+        #{wharf,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="berth != null" >
+        #{berth,jdbcType=VARCHAR},
+      </if>
+      <if test="waterDiversionTug != null" >
+        #{waterDiversionTug,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirShippingFreightForwarding != null" >
+        #{reservoirShippingFreightForwarding,jdbcType=INTEGER},
+      </if>
+      <if test="arrivalTime != null" >
+        #{arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userRealname != null" >
+        #{userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="shipForecastId != null" >
+        #{shipForecastId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.liutianjun.pojo.ShipDynamicQuery" resultType="java.lang.Integer" >
+    select count(*) from ship_dynamic
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ship_dynamic
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.voyageNumber != null" >
+        voyage_number = #{record.voyageNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.arriveAnchorage != null" >
+        arrive_anchorage = #{record.arriveAnchorage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entryTime != null" >
+        entry_time = #{record.entryTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departureTime != null" >
+        departure_time = #{record.departureTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entryDeparture != null" >
+        entry_departure = #{record.entryDeparture,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstCableTime != null" >
+        first_cable_time = #{record.firstCableTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.berthingTime != null" >
+        berthing_time = #{record.berthingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loadUnload != null" >
+        load_unload = #{record.loadUnload,jdbcType=INTEGER},
+      </if>
+      <if test="record.transportMode != null" >
+        transport_mode = #{record.transportMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastPort != null" >
+        last_port = #{record.lastPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextPort != null" >
+        next_port = #{record.nextPort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loadUnloadCategory != null" >
+        load_unload_category = #{record.loadUnloadCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.reservoirArea != null" >
+        reservoir_area = #{record.reservoirArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wharf != null" >
+        wharf = #{record.wharf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=VARCHAR},
+      </if>
+      <if test="record.berth != null" >
+        berth = #{record.berth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waterDiversionTug != null" >
+        water_diversion_tug = #{record.waterDiversionTug,jdbcType=INTEGER},
+      </if>
+      <if test="record.reservoirShippingFreightForwarding != null" >
+        reservoir_shipping_freight_forwarding = #{record.reservoirShippingFreightForwarding,jdbcType=INTEGER},
+      </if>
+      <if test="record.arrivalTime != null" >
+        arrival_time = #{record.arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userRealname != null" >
+        user_realName = #{record.userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipForecastId != null" >
+        ship_forecast_id = #{record.shipForecastId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ship_dynamic
+    set id = #{record.id,jdbcType=INTEGER},
+      voyage_number = #{record.voyageNumber,jdbcType=VARCHAR},
+      arrive_anchorage = #{record.arriveAnchorage,jdbcType=VARCHAR},
+      entry_time = #{record.entryTime,jdbcType=VARCHAR},
+      departure_time = #{record.departureTime,jdbcType=VARCHAR},
+      entry_departure = #{record.entryDeparture,jdbcType=INTEGER},
+      first_cable_time = #{record.firstCableTime,jdbcType=VARCHAR},
+      berthing_time = #{record.berthingTime,jdbcType=VARCHAR},
+      load_unload = #{record.loadUnload,jdbcType=INTEGER},
+      transport_mode = #{record.transportMode,jdbcType=VARCHAR},
+      last_port = #{record.lastPort,jdbcType=VARCHAR},
+      next_port = #{record.nextPort,jdbcType=VARCHAR},
+      load_unload_category = #{record.loadUnloadCategory,jdbcType=INTEGER},
+      reservoir_area = #{record.reservoirArea,jdbcType=VARCHAR},
+      wharf = #{record.wharf,jdbcType=VARCHAR},
+      position = #{record.position,jdbcType=VARCHAR},
+      berth = #{record.berth,jdbcType=VARCHAR},
+      water_diversion_tug = #{record.waterDiversionTug,jdbcType=INTEGER},
+      reservoir_shipping_freight_forwarding = #{record.reservoirShippingFreightForwarding,jdbcType=INTEGER},
+      arrival_time = #{record.arrivalTime,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_realName = #{record.userRealname,jdbcType=VARCHAR},
+      ship_forecast_id = #{record.shipForecastId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liutianjun.pojo.ShipDynamic" >
+    update ship_dynamic
+    <set >
+      <if test="voyageNumber != null" >
+        voyage_number = #{voyageNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="arriveAnchorage != null" >
+        arrive_anchorage = #{arriveAnchorage,jdbcType=VARCHAR},
+      </if>
+      <if test="entryTime != null" >
+        entry_time = #{entryTime,jdbcType=VARCHAR},
+      </if>
+      <if test="departureTime != null" >
+        departure_time = #{departureTime,jdbcType=VARCHAR},
+      </if>
+      <if test="entryDeparture != null" >
+        entry_departure = #{entryDeparture,jdbcType=INTEGER},
+      </if>
+      <if test="firstCableTime != null" >
+        first_cable_time = #{firstCableTime,jdbcType=VARCHAR},
+      </if>
+      <if test="berthingTime != null" >
+        berthing_time = #{berthingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="loadUnload != null" >
+        load_unload = #{loadUnload,jdbcType=INTEGER},
+      </if>
+      <if test="transportMode != null" >
+        transport_mode = #{transportMode,jdbcType=VARCHAR},
+      </if>
+      <if test="lastPort != null" >
+        last_port = #{lastPort,jdbcType=VARCHAR},
+      </if>
+      <if test="nextPort != null" >
+        next_port = #{nextPort,jdbcType=VARCHAR},
+      </if>
+      <if test="loadUnloadCategory != null" >
+        load_unload_category = #{loadUnloadCategory,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirArea != null" >
+        reservoir_area = #{reservoirArea,jdbcType=VARCHAR},
+      </if>
+      <if test="wharf != null" >
+        wharf = #{wharf,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="berth != null" >
+        berth = #{berth,jdbcType=VARCHAR},
+      </if>
+      <if test="waterDiversionTug != null" >
+        water_diversion_tug = #{waterDiversionTug,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirShippingFreightForwarding != null" >
+        reservoir_shipping_freight_forwarding = #{reservoirShippingFreightForwarding,jdbcType=INTEGER},
+      </if>
+      <if test="arrivalTime != null" >
+        arrival_time = #{arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userRealname != null" >
+        user_realName = #{userRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="shipForecastId != null" >
+        ship_forecast_id = #{shipForecastId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liutianjun.pojo.ShipDynamic" >
+    update ship_dynamic
+    set voyage_number = #{voyageNumber,jdbcType=VARCHAR},
+      arrive_anchorage = #{arriveAnchorage,jdbcType=VARCHAR},
+      entry_time = #{entryTime,jdbcType=VARCHAR},
+      departure_time = #{departureTime,jdbcType=VARCHAR},
+      entry_departure = #{entryDeparture,jdbcType=INTEGER},
+      first_cable_time = #{firstCableTime,jdbcType=VARCHAR},
+      berthing_time = #{berthingTime,jdbcType=VARCHAR},
+      load_unload = #{loadUnload,jdbcType=INTEGER},
+      transport_mode = #{transportMode,jdbcType=VARCHAR},
+      last_port = #{lastPort,jdbcType=VARCHAR},
+      next_port = #{nextPort,jdbcType=VARCHAR},
+      load_unload_category = #{loadUnloadCategory,jdbcType=INTEGER},
+      reservoir_area = #{reservoirArea,jdbcType=VARCHAR},
+      wharf = #{wharf,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      berth = #{berth,jdbcType=VARCHAR},
+      water_diversion_tug = #{waterDiversionTug,jdbcType=INTEGER},
+      reservoir_shipping_freight_forwarding = #{reservoirShippingFreightForwarding,jdbcType=INTEGER},
+      arrival_time = #{arrivalTime,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_realName = #{userRealname,jdbcType=VARCHAR},
+      ship_forecast_id = #{shipForecastId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,70 @@
+package com.ange.controller.code;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ange.service.code.CostCodeService;
+/**
+ * 费用代码控制器
+ * @author dzjin
+ *
+ */
+@Controller
+@RequestMapping("/costCode")
+public class CostcodeController {
+	
+	@Autowired
+	CostCodeService costCodeService;
+	
+	@RequestMapping(value = "/insertCostCode" , method = RequestMethod.POST)
+	public String insertCostCode(String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		if(1 == costCodeService.insertCostCode(costCode, costName, costUnit, costRate, costType)){
+			return "code/costCodeList.jsp";
+		}else{
+			return "code/addCostCode.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/updateCostCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String updateCostCode(String id,String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		if(1 == costCodeService.updateCostCode(id , costCode, costName, costUnit, costRate, costType)){
+			return "成功";
+		}else{
+			return "失败";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteCostCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteCostCode(String id){
+		if(1 == costCodeService.deleteCostCode(id)){
+			return "删除成功！";
+		}else{
+			return "删除失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/queryCostCodeCode" , method = RequestMethod.GET)
+	public String queryCostCodeCode(HttpServletRequest request, HttpServletResponse response, 
+			Integer page, Integer strip){
+		
+		Map<String, Object> map = costCodeService.queryCostCode(page , strip);
+		request.getSession().setAttribute("page", page);
+		request.getSession().setAttribute("strip", strip);
+		request.getSession().setAttribute("getRoleList", map.get("list"));
+		request.getSession().setAttribute("total", map.get("total"));
+		return "code/costCodeList.jsp";
+	}
+
+}

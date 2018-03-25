@@ -1,0 +1,68 @@
+package com.ange.controller.code;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ange.service.code.UnitCodeService;
+
+/**
+ * 单位代码控制器
+ * @author dzjin
+ *
+ */
+@Controller
+@RequestMapping("/unitCode")
+public class UnitCodeController {
+	
+	@Autowired
+	UnitCodeService unitCodeService;
+	
+	@RequestMapping(value = "/insertUnitCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String insertUnitCode(String unitCode,String unitName,String unitType,String unitEname,String address,String phone){
+		if(1 == unitCodeService.insertUnitCode(unitCode, unitName, unitType, unitEname, address, phone)){
+			return "添加成功！";
+		}else{
+			return "添加失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/updateUnitCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String updateUnitCode(String id , String unitCode,String unitName,String unitType,String unitEname,String address,String phone){
+		if(1 == unitCodeService.updateUnitCode(id , unitCode, unitName, unitType, unitEname, address, phone)){
+			return "更新成功！";
+		}else{
+			return "更新失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteUnitCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteUnitCode(String id ){
+		if(1 == unitCodeService.deleteUnitCode(id)){
+			return "删除成功！";
+		}else{
+			return "删除失败！";
+		}
+	}
+	
+	@RequestMapping(value = "/queryUnitCodeCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> queryUnitCodeCode(){
+		Map<String, Object> result = new HashMap<String,Object>();
+		
+		result.put("list", unitCodeService.queryUnitCode());
+		
+		return result;
+	}
+	
+
+
+}

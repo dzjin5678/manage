@@ -1,0 +1,337 @@
+package com.ange.service.cabin;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.CustomsReleaseDao;
+import com.ange.dao.GoodsDao;
+import com.ange.dao.GoodsTaskDao;
+import com.ange.dao.ShipoperationDao;
+import com.ange.model.Goods;
+import com.ange.model.GoodsTask;
+import com.ange.model.Shipoperation;
+import com.ange.tool.DateHandle;
+import com.ange.tool.Result;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+@Service
+public class TackService {
+	@Autowired
+	private ShipoperationDao shipoperationDao;
+	@Autowired
+	private GoodsDao goodsDao;
+	@Autowired
+	private GoodsTaskDao goodsTaskDao;
+	@Autowired
+	private CustomsReleaseDao customsReleaseDao;
+
+	/**
+	 * 添加船舶作业
+	 * 
+	 * @param dynamicId
+	 * @param number
+	 * @param operation
+	 * @param connectionTime
+	 * @param startPump
+	 * @param stopTime
+	 * @param disconnectTime
+	 * @param unberthingTime
+	 * @param operationTime
+	 * @param weight
+	 * @param volume
+	 * @param speed
+	 * @param inBerthTime
+	 * @param remarks
+	 * @param realName
+	 * @param userid
+	 * @return
+	 */
+	public Result addShipOperation(Integer dynamicId, String number, String operation, String connectionTime,
+			String startPump, String stopTime, String disconnectTime, String unberthingTime, String operationTime,
+			String weight, String volume, String speed, String inBerthTime, String remarks, String realName,
+			Integer userid) {
+		String time = DateHandle.getCurrent(DateHandle.S);
+		try {
+			shipoperationDao.addShipOperation(dynamicId, number, operation, connectionTime, startPump, stopTime,
+					disconnectTime, unberthingTime, operationTime, weight, volume, speed, inBerthTime, remarks,
+					realName, userid, time);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false);
+		}
+	}
+
+	/**
+	 * 添加舱单货物
+	 * 
+	 * @return
+	 */
+	public Result addGoods(Integer forecastId, String number, String shipper, String freightForwarding,
+			String carryOrder, String goodsName, String goodType, String weight, String volume, String uninstallWeight,
+			String uninstallVolume, String signName, String releaseTime, String extractDate, String remarks,
+			String realName, String userid) {
+		String time = DateHandle.getCurrent(DateHandle.S);
+		Map<String,Object> customRelease=goodsDao.getCustomReleaseId(forecastId,carryOrder);
+		Integer i_f_trade=goodsDao.getI_f_trade(forecastId);
+		try {
+			String state="0";
+			String filePath="";
+			if(customRelease!=null) {
+				state="1";
+				customsReleaseDao.updateState(Integer.valueOf(customRelease.get("id")+""),state);
+				filePath=customRelease.get("filePath")+"";
+			}
+			if (i_f_trade==0) {
+				state="2";
+			}
+			goodsDao.addGoods(forecastId, number, shipper, freightForwarding, carryOrder, goodsName, goodType, weight,
+					volume, uninstallWeight, uninstallVolume, signName, releaseTime, extractDate, remarks, realName,
+					userid, time,state,filePath);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "添加失败");
+		}
+	}
+
+	/**
+	 * 添加货物作业信息
+	 * 
+	 * @param shift
+	 * @param amount
+	 * @param startTime
+	 * @param stopTime
+	 * @param goodsId
+	 * @param userid
+	 * @param realName
+	 * @param reservoirArea 
+	 * @param operation 
+	 * @return
+	 */
+	public Result addGoodsTask(String shift, Double amount, String startTime, String stopTime, Integer goodsId,
+			Integer userid, String realName, String operation, String reservoirArea) {
+		String time = DateHandle.getCurrent(DateHandle.S);
+		Integer stream = goodsTaskDao.getGoodsTaskStream(goodsId);
+		try {
+			goodsTaskDao.addGoodsTask(shift, amount, startTime, stopTime, goodsId, userid, realName, stream, time,operation,reservoirArea);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "添加失败");
+		}
+	}
+	
+	
+
+	public Result updateGoodsTask(String shift, Double amount, String startTime, String stopTime, Integer id,
+			Integer userid, String realName, String operation, String reservoirArea) {
+		String time = DateHandle.getCurrent(DateHandle.S);
+		try {
+			goodsTaskDao.updateGoodsTask(shift, amount, startTime, stopTime, id, userid, realName, time,operation,reservoirArea);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "添加失败");
+		}
+	}
+
+
+	/**
+	 * 更新船舶作业信息
+	 * 
+	 * @param number
+	 * @param operation
+	 * @param connectionTime
+	 * @param startPump
+	 * @param stopTime
+	 * @param disconnectTime
+	 * @param unberthingTime
+	 * @param operationTime
+	 * @param weight
+	 * @param volume
+	 * @param speed
+	 * @param inBerthTime
+	 * @param remarks
+	 * @param realName
+	 * @param userid
+	 * @return
+	 */
+	public Result updateShipOperation(Integer id, String number, String operation, String connectionTime,
+			String startPump, String stopTime, String disconnectTime, String unberthingTime, String operationTime,
+			String weight, String volume, String speed, String inBerthTime, String remarks, String realName,
+			Integer userid) {
+		try {
+			shipoperationDao.updateShipOperation(id, number, operation, connectionTime, startPump, stopTime,
+					disconnectTime, unberthingTime, operationTime, weight, volume, speed, inBerthTime, remarks,
+					realName, userid);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "更新失败");
+		}
+	}
+
+	public Map<String, Object> getShipOperationList(Integer page, Integer strip,Integer dynamicId) {
+		PageHelper.startPage(page, strip);
+		List<Shipoperation> list = shipoperationDao.getShipOperationList(dynamicId);
+		PageInfo<Shipoperation> pageInfo = new PageInfo<Shipoperation>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+
+	/**
+	 * 获取船舶作业信息
+	 * 
+	 * @param id
+	 *            信息id
+	 * @return
+	 */
+	public Shipoperation getShipOperationInfo(Integer id) {
+		Shipoperation shipoperation = shipoperationDao.getShipOperationInfo(id);
+		return shipoperation;
+	}
+
+	/**
+	 * 删除船舶作业信息
+	 * 
+	 * @param id
+	 *            船舶作业信息id
+	 * 
+	 * @return
+	 */
+	public Result deleteShipOperation(Integer id) {
+		try {
+			shipoperationDao.deleteShipOperation(id);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "删除失败");
+		}
+	}
+
+	public Map<String, Object> getGoodsList(Integer page, Integer strip,Integer forecastId) {
+		PageHelper.startPage(page, strip);
+		List<Goods> list = goodsDao.getGoodsList(forecastId);
+		PageInfo<Goods> pageInfo = new PageInfo<Goods>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+
+	/**
+	 * 获取舱单货物信息
+	 * 
+	 * @param id
+	 *            舱单货物id
+	 * @return
+	 */
+	public Goods getGoodsInfo(Integer id) {
+		Goods goods = goodsDao.getGoodsInfo(id);
+		return goods;
+	}
+
+	/**
+	 * 更新舱单货物信息
+	 * 
+	 * @param id
+	 * @param number
+	 * @param shipper
+	 * @param freightForwarding
+	 * @param carryOrder
+	 * @param goodsName
+	 * @param goodType
+	 * @param weight
+	 * @param volume
+	 * @param uninstallWeight
+	 * @param uninstallVolume
+	 * @param signName
+	 * @param releaseTime
+	 * @param extractDate
+	 * @param remarks
+	 * @param realName
+	 * @param userid
+	 * @return
+	 */
+	public Result updateGoods(Integer id, String number, String shipper, String freightForwarding, String carryOrder,
+			String goodsName, String goodType, String weight, String volume, String uninstallWeight,
+			String uninstallVolume, String signName, String releaseTime, String extractDate, String remarks,
+			String realName, String userid) {
+		try {
+			goodsDao.updateGoods(id, number, shipper, freightForwarding, carryOrder, goodsName, goodType, weight,
+					volume, uninstallWeight, uninstallVolume, signName, releaseTime, extractDate, remarks, realName,
+					userid);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "更新失败");
+		}
+	}
+
+	/**
+	 * 删除舱单货物
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Result deleteGoods(Integer id) {
+		try {
+			goodsDao.deleteGoods(id);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "删除失败");
+		}
+	}
+
+	/**
+	 * 删除货物作业
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Result deleteGoodsTask(Integer id) {
+		try {
+			goodsTaskDao.deleteGoodsTask(id);
+			return new Result(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "删除失败");
+		}
+	}
+
+	/**
+	 * 获取货物作业列表
+	 * 
+	 * @param page
+	 *            页数
+	 * @param strip
+	 *            条数
+	 * @param goodsId
+	 *            舱单货物id
+	 * @return
+	 */
+	public Map<String, Object> getGoodsTaskList(Integer page, Integer strip, Integer goodsId) {
+		PageHelper.startPage(page, strip);
+		List<GoodsTask> list = goodsTaskDao.getGoodsTaskList(goodsId);
+		PageInfo<GoodsTask> pageInfo = new PageInfo<GoodsTask>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+
+	public GoodsTask getGoodsTaskInfo(Integer goodsTaskId) {
+		GoodsTask goodsTask = goodsTaskDao.getGoodsTaskInfo(goodsTaskId);
+		return goodsTask;
+	}
+
+}

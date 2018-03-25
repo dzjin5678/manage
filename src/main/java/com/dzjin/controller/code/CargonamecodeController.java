@@ -1,0 +1,85 @@
+package com.dzjin.controller.code;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ange.model.Cargonamecode;
+import com.dzjin.service.code.CargoNameCodeService;
+
+/**
+ * 货名代码控制器
+ * @author dzjin
+ *
+ */
+@Controller
+@RequestMapping("/cargoNameCode")
+public class CargonamecodeController {
+	
+	@Autowired
+	CargoNameCodeService cargoNameCodeService;
+	
+	@RequestMapping(value = "/getCargoNameCode" , method=RequestMethod.POST)
+	public String getCargoNameCode(HttpServletRequest request , String id){
+		Cargonamecode cargonamecode = cargoNameCodeService.getCargonNameCode(id);
+		if(null!=cargonamecode){
+			List<Cargonamecode> cargonamecodes = new ArrayList<Cargonamecode>();
+			cargonamecodes.add(cargonamecode);
+			request.getSession().setAttribute("cargoNameCodeList", cargonamecodes);
+			return "code/updateCargoNameCode.jsp";
+		}else{
+			return "code/cargoNameCodeList.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/insertCargoNameCode" , method = RequestMethod.POST)
+	public String insertCargoNameCode(HttpServletRequest request , String cargoNameCode,String cargoName,String cargoTypeBelonged){
+		if(1 == cargoNameCodeService.insertCargonamecode(cargoNameCode, cargoName, cargoTypeBelonged)){
+			return "code/cargoNameCodeList.jsp";
+		}else{
+			request.getSession().setAttribute("addCargoNameCodeErrorInfo", "添加货名代码失败");
+			return "code/addCargoNameCodeList.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/updateCargoNameCode" , method = RequestMethod.POST)
+	public String updateCargoNameCode(String id,String cargoNameCode,String cargoName,String cargoTypeBelonged){
+		if(1 == cargoNameCodeService.updateCargonamecode(id,cargoNameCode, cargoName, cargoTypeBelonged)){
+			return "code/cargoNameCodeList.jsp";
+		}else{
+			return "code/cargoNameCodeList.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/deleteCargoNameCode" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteCargoNameCode(String id){
+		if(1 == cargoNameCodeService.deleteCargoNameCode(id)){
+			return "code/cargoNameCodeList.jsp";
+		}else{
+			return "code/cargoNameCodeList.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/queryCargoNameCode" , method = RequestMethod.GET)
+	public String queryCargoNameCode(HttpServletRequest request, HttpServletResponse response, Integer page, Integer strip){
+		
+		Map<String, Object> map = cargoNameCodeService.queryCargoNameCode(page , strip);
+		request.getSession().setAttribute("page", page);
+		request.getSession().setAttribute("strip", strip);
+		request.getSession().setAttribute("cargoNameList", map.get("list"));
+		request.getSession().setAttribute("total", map.get("total"));
+		return "code/cargoNameCodeList.jsp";	
+	}
+	
+
+}

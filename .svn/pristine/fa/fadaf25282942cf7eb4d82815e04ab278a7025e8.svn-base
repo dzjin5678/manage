@@ -1,0 +1,71 @@
+package com.liutianjun.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.liutianjun.dao.ShipDynamicDao;
+import com.liutianjun.pojo.ShipDynamic;
+import com.liutianjun.pojo.ShipDynamicQuery;
+import com.liutianjun.pojo.ShipDynamicQuery.Criteria;
+import com.liutianjun.service.ShipDynamicService;
+
+@Service
+public class ShipDynamicServiceImpl implements ShipDynamicService {
+
+	@Autowired
+	private ShipDynamicDao shipDynamicDao;
+	
+	@Override
+	public List<ShipDynamic> getShipDynamicList(int page,int rows) {
+		ShipDynamicQuery example = new ShipDynamicQuery();
+		example.setPageNo(page);
+		example.setPageSize(rows);
+		List<ShipDynamic> list = shipDynamicDao.selectByExample(example);
+		return list;
+	}
+
+	@Override
+	public int insert(ShipDynamic record) {
+		int i = shipDynamicDao.insert(record);
+		return i;
+	}
+
+	@Override
+	public int updateByPrimaryKey(ShipDynamic record) {
+		int i = shipDynamicDao.updateByPrimaryKey(record);
+		return i;
+	}
+
+	@Override
+	public int deleteByPrimaryKey(Integer id) {
+		int i = shipDynamicDao.deleteByPrimaryKey(id);
+		return i;
+	}
+
+	@Override
+	public int countAll() {
+		ShipDynamicQuery example = new ShipDynamicQuery();
+		int i = shipDynamicDao.countByExample(example);
+		return i;
+	}
+
+	@Override
+	public ShipDynamic selectByPrimaryKey(Integer id) {
+		ShipDynamic shipDynamic = shipDynamicDao.selectByPrimaryKey(id);
+		return shipDynamic;
+	}
+
+	@Override
+	public List<ShipDynamic> getShipDynamicListByForecast(int page, int rows, int id) {
+		ShipDynamicQuery example = new ShipDynamicQuery();
+		Criteria criteria = example.createCriteria();
+		criteria.andShipForecastIdEqualTo(id);
+		example.setPageNo(page);
+		example.setPageSize(rows);
+		List<ShipDynamic> list = shipDynamicDao.selectByExample(example);
+		return list;
+	}
+
+}

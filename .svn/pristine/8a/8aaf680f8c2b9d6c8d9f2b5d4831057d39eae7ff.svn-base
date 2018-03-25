@@ -1,0 +1,46 @@
+package com.ange.service.code;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.CargonamecodeDao;
+import com.ange.model.Cargonamecode;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+@Service
+public class CargoNameCodeService {
+	@Autowired
+	CargonamecodeDao cargonamecodeDao;
+	
+	public int insertCargonamecode(String cargoNameCode,String cargoName,String cargoTypeBelonged){
+		return cargonamecodeDao.insertCargonamecode(cargoNameCode, cargoName, cargoTypeBelonged);
+	}
+	
+	public int updateCargonamecode(String id , String cargoNameCode,String cargoName,String cargoTypeBelonged){
+		return cargonamecodeDao.updateCargonamecode(id, cargoNameCode, cargoName, cargoTypeBelonged);
+	}
+	
+	public Map<String, Object> queryCargoNameCode(Integer page, Integer strip){
+		PageHelper.startPage(page, strip);
+		List<Cargonamecode> list = cargonamecodeDao.queryCargoNameCode();
+		PageInfo<Cargonamecode> pageInfo = new PageInfo<Cargonamecode>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+	
+	public Cargonamecode getCargonNameCode(String id){
+		return cargonamecodeDao.getCargonNameCode(id);
+	}
+		
+	
+	public int deleteCargoNameCode(String id){
+		return cargonamecodeDao.deleteCargoNameCode(id);
+	}
+}

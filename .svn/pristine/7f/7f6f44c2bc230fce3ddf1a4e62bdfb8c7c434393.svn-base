@@ -1,0 +1,47 @@
+package com.ange.dao;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.ange.model.User;
+
+public interface UserDao {
+
+	/**
+	 * 根据用户名和密码获取用户信息
+	 * 
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	@Select("select * from user where userName=#{userName} and password=#{password} ")
+	public User loginGetUser(@Param("userName") String userName, @Param("password") String password);
+
+	/**
+	 * 根据用户名和密码获取User信息
+	 * 
+	 * @param username
+	 *            用户名
+	 * @param password
+	 *            密码
+	 * @return
+	 */
+	@Select("select * from user where username=#{username} and password=#{password}")
+	public User byPasswordGetUser(@Param("username") String username, @Param("password") String password);
+
+	@Insert("insert into testuser (username,password) values(#{username},#{password})")
+	public void createUser(@Param("username") String username, @Param("password") String password);
+
+
+	@Update("update user set headPic=#{headPic},realName=#{realName},birth=#{birth},sex=#{sex},email=#{email},weChat=#{weChat} where id=#{userid}")
+	public void updateUserInfo(@Param("userid") Integer userid, @Param("headPic") String headPic,
+			@Param("realName") String realName, @Param("birth") String birth, @Param("sex") String sex,
+			@Param("email") String email, @Param("weChat") String weChat);
+
+	
+	@Select("select * from user where id=#{id}")
+	public User byIdgetUserInfo(@Param("id")int id);
+
+}

@@ -1,0 +1,39 @@
+package com.ange.service.code;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.VsscodeDao;
+import com.ange.model.Vsscode;
+
+@Service
+public class VssCodeService {
+	
+	@Autowired
+	VsscodeDao vsscodeDao;
+	
+	public int insertVssCode(String vssCode ,String vssCname ,String vssEname ,String nationality ,
+			String caption,String width ,String tonnage ,String cargoType ,String loadline ,
+			String distance_outfall_bow , String unitCode ,String agency ,String remark){
+		return vsscodeDao.insertVssCode(vssCode, vssCname, vssEname, nationality, caption, width, tonnage, 
+				cargoType, loadline, distance_outfall_bow, unitCode, agency, remark);
+	}
+	
+	public int updateVssCode(String id , String vssCode ,String vssCname ,String vssEname ,String nationality ,
+			String caption,String width ,String tonnage ,String cargoType ,String loadline ,
+			String distance_outfall_bow , String unitCode ,String agency ,String remark){
+		return vsscodeDao.updateVssCode(id,vssCode, vssCname, vssEname, nationality, caption, width, tonnage, 
+				cargoType, loadline, distance_outfall_bow, unitCode, agency, remark);
+	}
+	
+	public List<Vsscode> queryVssCode(){
+		return vsscodeDao.queryVssCode();
+	}
+	
+	public int deleteVssCode(String id){
+		return vsscodeDao.deleteVssCode(id);
+	}
+
+}

@@ -1,0 +1,24 @@
+package com.ange.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+
+import com.ange.model.SysPower;
+
+public interface SysPowerDao {
+
+	@Insert("insert into sysPower (roleId,url,explains,createtime) values (#{roleId},#{url},#{explains},#{createtime})")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+	public void addPower(SysPower sysPower);
+
+	@Delete("delete from sysPower where id=#{id}")
+	public void deleteRole(Integer id);
+
+	@Select("select * from sysPower where roleId=#{roleId}")
+	public List<SysPower> getPowerList(Integer roleId);
+
+}

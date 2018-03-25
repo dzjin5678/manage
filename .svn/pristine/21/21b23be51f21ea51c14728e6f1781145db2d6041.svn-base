@@ -1,0 +1,53 @@
+package com.ange.service.code;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.CostcodeDao;
+import com.ange.model.Costcode;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+@Service
+public class CostCodeService {
+	
+	@Autowired
+	CostcodeDao costcodeDao;
+	
+	public int insertCostCode(String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		return costcodeDao.insertCostCode(costCode, costName, costUnit, costRate, costType);
+	}
+	
+	public int updateCostCode(String id , String costCode ,String costName ,
+			String costUnit ,String costRate ,String costType){
+		return costcodeDao.updateCostCode(id , costCode, costName, costUnit, costRate, costType);
+	}
+	
+	public Map<String, Object> queryCostCode(Integer page, Integer strip){
+		PageHelper.startPage(page, strip);
+		List<Costcode> list = costcodeDao.queryCostCode();
+		PageInfo<Costcode> pageInfo = new PageInfo<Costcode>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+	
+	public List<Costcode> queryCostCodeTemp(){
+
+		return costcodeDao.queryCostCode();
+	}
+	
+	public int deleteCostCode(String id){
+		return costcodeDao.deleteCostCode(id);
+	}
+	
+	public Costcode getCostcode(String id){
+		return costcodeDao.getCostcode(id);
+	}
+}

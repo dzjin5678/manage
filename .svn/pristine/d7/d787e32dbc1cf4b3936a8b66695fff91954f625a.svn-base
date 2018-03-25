@@ -1,0 +1,22 @@
+package com.ange.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+@RestController
+@RequestMapping("test")
+public class TestController {
+	@RequestMapping("test")
+	@ResponseBody
+	public String test() {
+		return "111";
+	}
+	
+	@RequestMapping("te")
+	public ModelAndView www(String name) {
+		ModelAndView mv = new ModelAndView(name);
+		return mv;
+	}
+}

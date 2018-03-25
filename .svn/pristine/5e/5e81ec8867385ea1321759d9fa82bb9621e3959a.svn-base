@@ -1,0 +1,150 @@
+package com.liutianjun.controller.ship_prediction;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.liutianjun.pojo.ShipForecast;
+import com.liutianjun.service.ShipForecastService;
+/**
+ * 船舶预报管理Conreoller
+ * 
+ *
+ */
+@Controller
+@RequestMapping("/ship_forecast")
+public class ShipForecastController {
+	@Autowired
+	private ShipForecastService shipForecastService;
+
+	/**
+	 * 展示船舶动态列表
+	 * @Title: getShipForecastDy 
+	 * @param @param page
+	 * @param @param strip
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/list_d")
+	public String getShipForecastDy(@RequestParam(value="page", defaultValue="1")int page, @RequestParam(value="strip", defaultValue="10")int strip, Model model) {
+		showForecast(page, strip, model);
+		return "ship_predition/ship_forecast_dynamic.jsp";
+	}
+	/**
+	 * 展示船舶动态列表（船舶作业父表）
+	 * @Title: getShipForecastOp 
+	 * @param @param page
+	 * @param @param strip
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/list_d_o")
+	public String getShipForecastOp(@RequestParam(value="page", defaultValue="1")int page, @RequestParam(value="strip", defaultValue="10")int strip, Model model) {
+		showForecast(page, strip, model);
+		return "ship_predition/ship_forecast_dynamic_operation.jsp";
+	}
+
+	/**
+	 * 船舶预报表
+	 * @Title: getShipForecastList 
+	 * @param @param page
+	 * @param @param strip
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/list")
+	public String getShipForecastList(@RequestParam(value="page", defaultValue="1")int page, @RequestParam(value="strip", defaultValue="10")int strip, Model model) {
+		showForecast(page, strip, model);
+		return "ship_predition/ship_forecast.jsp";
+	}
+	
+	/**
+	 * 根据ID删除船舶预报表记录
+	 * @Title: deleteByPrimaryKey 
+	 * @param @param id
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping(value = "/delete" , method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteByPrimaryKey(Integer id) {
+		if(1 == shipForecastService.deleteByPrimaryKey(id)){
+			return "redirect:/ship_forecast/list";
+		}else{
+			return "redirect:/ship_forecast/list";
+		}
+	}
+	/**
+	 * 插入船舶预报表记录
+	 * @Title: insert 
+	 * @param @param record
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping(value = "/insert" , method = RequestMethod.POST)
+	public String insert(ShipForecast record) {
+		if(1 == shipForecastService.insert(record)){
+			return "redirect:/ship_forecast/list";
+		}else{
+			return "redirect:/ship_forecast/list";
+		}
+	}
+	/**
+	 * 修改船舶预报表记录
+	 * @Title: updateByPrimaryKeySelective 
+	 * @param @param record
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping(value = "/update" , method = RequestMethod.POST)
+	public String updateByPrimaryKeySelective(ShipForecast record) {
+		if(1 == shipForecastService.updateByPrimaryKey(record)){
+			return "redirect:/ship_forecast/list";
+		}else{
+			return "redirect:/ship_forecast/list";
+		}
+	}
+	
+	/**
+	 * 跳转到船舶预报表修改页面
+	 * @Title: updateBefore 
+	 * @param @param id
+	 * @param @param model
+	 * @param @return 
+	 * @return String
+	 */
+	@RequestMapping("/updatebefore")
+	public String updateBefore(@RequestParam(value="id")Integer id, Model model) {
+		ShipForecast shipForecast = shipForecastService.selectByPrimaryKey(id);
+		model.addAttribute("shipForecast", shipForecast);
+		return "/ship_predition/update_ship_forecast.jsp";
+	}
+	/**
+	 * 抽取页面参数方法
+	 * @Title: showForecast 
+	 * @param @param page
+	 * @param @param strip
+	 * @param @param model 
+	 * @return void
+	 */
+	private void showForecast(int page, int strip, Model model) {
+		List<ShipForecast> list = shipForecastService.getShipForecastList(page, strip);
+		int total = shipForecastService.countAll();
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
+		model.addAttribute("strip", strip);
+		model.addAttribute("total", total);
+	}
+	
+	
+	
+}

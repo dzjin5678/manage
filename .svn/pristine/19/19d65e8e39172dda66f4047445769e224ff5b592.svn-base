@@ -1,0 +1,50 @@
+package com.ange.service.code;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ange.dao.StorageTankContractDao;
+import com.ange.model.StorageTankContract;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+@Service
+public class StorageTankContractService {
+	
+	@Autowired
+	StorageTankContractDao storageTankContractDao;
+	
+	public StorageTankContract getStorageTankContract(String id){
+		return storageTankContractDao.getStorageTankContract(id);
+	}
+	
+	public Map<String, Object> queryStorageTankContract(String storageTankNumber , Integer page, Integer strip){
+		//进行查询分页的处理
+		PageHelper.startPage(page, strip);
+		List<StorageTankContract> list = storageTankContractDao.queryStorageTankContract(storageTankNumber);
+		PageInfo<StorageTankContract> pageInfo = new PageInfo<StorageTankContract>(list);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("total", pageInfo.getTotal());
+		return map;
+	}
+	
+	public int insertStorageTankContract(String storageTankNumber,String client,String contract,
+			String cargoName,String P15,String DCF){
+		return storageTankContractDao.insertStorageTankContract(storageTankNumber, client, contract, cargoName, P15, DCF);
+	}
+	
+	public int updateStorageTankContract(String id,String storageTankNumber,String client,
+			String contract,String cargoName,String P15,String DCF){
+		return storageTankContractDao.updateStorageTankContract(id, storageTankNumber, client, contract, cargoName, P15, DCF);
+	}
+	
+	public int deleteStorageTankContract(String id){
+		return storageTankContractDao.deleteStorageTankContract(id);
+	}
+
+}
